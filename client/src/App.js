@@ -23,12 +23,16 @@ class App extends Component {
   }
   handleSubmit(event) {
    
-    var url = new URL( 'http://localhost:5000/getRow')
-    var params = {data: this.state.value ,}
+    var url = new URL( 'http://localhost:5000/api/getRow')
+    var params = {data: this.state.value}
+    console.log(this.state.value)
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url)
-    .then(res => res.json())
-    .then(info_ => this.setState({info: info_}, () => console.log("successfully fetched row information: ", info_)))
+    .then(res => res.json().then(function(result){console.log(result.data[0]);
+      alert(result.data[0])
+    }))
+   //.then(console.log(res))
+   // .then(result.data[0] => this.setState({info: result.data[0]}, () => console.log("successfully fetched row information: ", result.data[0])))
 
     event.preventDefault();
   }
@@ -108,7 +112,7 @@ class App extends Component {
             
           <input className = 'SubmitB' type="submit" value="Submit" />
         </div >
-      </form>
+      </form> 
       <div className = 'App-intro' style = {{fontSize: '20px', paddingLeft: '20px'}}>Visualization of above data</div>
        <div className = 'App-title' ></div><Chart data={results}/>
 

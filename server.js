@@ -30,16 +30,15 @@ app.get('/', function(req, res, next) {
 
 //case 1
 app.get('/api/getRow', (req, res) => {
-  connection.query('select COLUMN_NAME from information_schema.columns where TABLE_NAME = \'users\'',function(error,fields){
-  console.log(fields);
-  // connection.query('SELECT '+fields+' from users as A LEFT JOIN vetlog as B ON  A.`Rescue ID` = B.`PET ID#` and A.`Rescue ID` ='+'\''+res.query.data+'\'', function (error, results, fields) {
-    console.log(fields);
+    console.log(req.query.data);
+    connection.query('SELECT * from users as A LEFT OUTER JOIN vetlog as B ON  A.`Rescue ID` = B.`Pet ID#` WHERE A.`Rescue ID` ='+'\''+req.query.data+'\'', function (error, results, fields) {
+    //console.log(fields);
     if (error) throw error;
-     res.json(results);
-    // console.log(results);
+    res.send({data : results});
+    // res.json(results);
+    console.log(results);
   });
-});
-// });
+ });
 
 //case2
 app.get('/pet', (req, res) => {
