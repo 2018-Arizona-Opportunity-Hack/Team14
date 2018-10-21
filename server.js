@@ -21,7 +21,7 @@ app.use(cors()) // Use this after the variable declaration
 // });
 
 app.get('/', function(req, res, next) {
- 	connection.query('SELECT * from users', function (error, results, fields) {
+ 	connection.query('SELECT * from vetlog', function (error, results, fields) {
 		if (error) throw error;
 		res.send(JSON.stringify(results));
 	});
