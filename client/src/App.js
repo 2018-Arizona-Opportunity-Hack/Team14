@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 //import { Form, Text } from 'informed';
 //import logo from './logo.svg';
 import './App.css';
+//import 'react-json-table';
 import Chart from './chart'
 
 class App extends Component {
@@ -21,20 +22,25 @@ class App extends Component {
   handleChange(event) {
     this.setState({value: event.target.value});
   }
+
   handleSubmit(event) {
-   
+    var that = this
+    var output
     var url = new URL( 'http://localhost:5000/api/getRow')
     var params = {data: this.state.value}
     console.log(this.state.value)
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url)
     .then(res => res.json().then(function(result){console.log(result.data[0]);
-      alert(result.data[0])
+    //alert(JSON.stringify(result.data[0]))
+    output = JSON.stringify(result.data[0])
+    that.setState({info: output})
     }))
    //.then(console.log(res))
-   // .then(result.data[0] => this.setState({info: result.data[0]}, () => console.log("successfully fetched row information: ", result.data[0])))
-
+    //.then(result.data[0] => this.setState({info: result.data[0]}, () => console.log("successfully fetched row information: ", result.data[0])))
+    this.setState({info:  output });
     event.preventDefault();
+    console.log("state", this.state.info)
   }
   componentWillMount(){
     // var url = new URL( 'http://localhost:5000/api/getMultiCols')
@@ -95,7 +101,8 @@ class App extends Component {
         </div >
       </form>
       <div className = {'App-title'}> 
-      {this.state.info}
+      {this.state.info}}
+      
       </div>
        <form onSubmit={this.handleSubmitNew} >
        
