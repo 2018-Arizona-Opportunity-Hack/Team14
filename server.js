@@ -29,7 +29,10 @@ app.get('/', function(req, res, next) {
 
 app.get('/pet', (req, res) => {
 	console.log(req.query.data)
-  res.json('Wow  ' + req.query.data )
+  connection.query('SELECT'+req.query.data+'from users', function (error, results, fields) {
+    if (error) throw error;
+    res.send(JSON.stringify(results));
+  });
 });
 
 if (process.env.NODE_ENV === 'production') {
