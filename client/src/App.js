@@ -101,7 +101,7 @@ class App extends Component {
         </div >
       </form>
       <div className = {'App-title'}> 
-      {this.state.info}}
+      {this.state.info}
       
       </div>
        <form onSubmit={this.handleSubmitNew} >
