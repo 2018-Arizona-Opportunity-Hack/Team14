@@ -21,20 +21,34 @@ app.use(cors()) // Use this after the variable declaration
 // });
 
 app.get('/', function(req, res, next) {
- 	connection.query('SELECT * from vetlog', function (error, results, fields) {
+ 	connection.query('SELECT `Rescue ID` from users, vetlog where users.`Rescue ID` = `PET ID#` Group By `PET ID#`', function (error, results, fields) {
+    console.log(fields);
 		if (error) throw error;
 		res.send(JSON.stringify(results));
 	});
 });
 
+//case 1
+app.get('/api/getRow', (req, res) => {
+  connection.query('select COLUMN_NAME from information_schema.columns where TABLE_NAME = \'users\'',function(error,fields){
+  console.log(fields);
+  // connection.query('SELECT '+fields+' from users as A LEFT JOIN vetlog as B ON  A.`Rescue ID` = B.`PET ID#` and A.`Rescue ID` ='+'\''+res.query.data+'\'', function (error, results, fields) {
+    console.log(fields);
+    if (error) throw error;
+    // res.send(results);
+    // console.log(results);
+  });
+});
+// });
+
+//case2
 app.get('/pet', (req, res) => {
-	console.log(req.query.data)
-  connection.query('SELECT'+req.query.data+'from users', function (error, results, fields) {
+  console.log(req.query.data)
+  connection.query('SELECT'+req.query.data.x+' from users where '+req.query.data.y+" = "+req.query.data.sel+' GROUP BY '+req.query.data.y, function (error, results, fields) {
     if (error) throw error;
     res.send(JSON.stringify(results));
   });
 });
-
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
   app.use(express.static(path.join(__dirname, 'client/build')));
