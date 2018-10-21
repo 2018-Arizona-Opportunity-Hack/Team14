@@ -1,4 +1,4 @@
-# Pet Animals NPO Project
+# Retriever
 ## Usage
 
 Install once inside the main directory and once inside client folder

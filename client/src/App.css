@@ -36,7 +36,10 @@
     cursor: pointer;
 }
 
-
+.Check{
+  padding: 3px;
+  font-size: 17px
+}
 .App-title {
   font-size: 20px;
   padding: 30px;
@@ -45,6 +48,7 @@
 
 .App-intro {
   padding-right: 20px;
+  padding-bottom: 10px;
 
 }
 
