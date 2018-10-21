@@ -1,35 +1,29 @@
 # Pet Animals NPO Project
 ## Usage
 
-Install [nodemon](https://github.com/remy/nodemon) globally
+Install once inside the main directory and once inside client folder
 
 ```
-npm i nodemon -g
+npm install
 ```
 
 Install server and client dependencies
 
 ```
-yarn
+npm install
 cd client
-yarn
+npm install
 ```
 
-To start the server and client at the same time (from the root of the project)
+To start the server
 
 ```
-yarn dev
+npm start
 ```
 
-Running the production build on localhost. This will create a production build, then Node will serve the app on http://localhost:5000
+In a different window, to start the client,
 
 ```
-NODE_ENV=production yarn dev:server
+cd client
+npm start
 ```
-
-## How this works
-
-The key to use an Express backend with a project created with `create-react-app` is on using a **proxy**. We have a _proxy_ entry in `client/package.json`
-
-```
-"proxy": "http://localhost:5000

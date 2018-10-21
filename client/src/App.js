@@ -1,20 +1,32 @@
 import React, { Component } from 'react';
-
-import logo from './logo.svg';
-
+//import { Form, Text } from 'informed';
+//import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-  state = {
-    response: ''
-  };
+   constructor(props) {
+    super(props);
+    this.state = {value: '', info: ''};
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+ 
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    var url = new URL( 'http://localhost:5000/pet')
+    var params = {data: this.state.value ,}
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    fetch(url)
+    .then(res => res.json())
+    .then(info_ => this.setState({info: info_}, () => console.log("successfully fetched Data", info_)))
+
+    event.preventDefault();
+  }
   callApi = async () => {
     const response = await fetch('/api/hello');
     const body = await response.json();
@@ -26,13 +38,16 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">{this.state.response}</p>
-      </div>
+       <form onSubmit={this.handleSubmit} style = {{}}>
+       <div className = 'App-header'> Data Analysis Project </div>
+        <div className = 'App-title'>
+        <label  className = 'App-intro'>
+          Enter data to be queried
+          <input  className = 'Input' type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input className = 'SubmitB' type="submit" value="Submit" />
+        </div >
+      </form>
     );
   }
 }
