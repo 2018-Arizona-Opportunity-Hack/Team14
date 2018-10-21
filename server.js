@@ -35,7 +35,7 @@ app.get('/api/getRow', (req, res) => {
   // connection.query('SELECT '+fields+' from users as A LEFT JOIN vetlog as B ON  A.`Rescue ID` = B.`PET ID#` and A.`Rescue ID` ='+'\''+res.query.data+'\'', function (error, results, fields) {
     console.log(fields);
     if (error) throw error;
-    // res.send(results);
+     res.json(results);
     // console.log(results);
   });
 });

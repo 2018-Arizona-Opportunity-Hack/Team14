@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 //import { Form, Text } from 'informed';
 //import logo from './logo.svg';
 import './App.css';
+import Chart from './chart'
 
 class App extends Component {
    constructor(props) {
     super(props);
-    this.state = {value: '', info: '', buttonVal: [false,false,false,false,false,false,false,false], row: {}};
+    this.state = {value: '', info: '', buttonVal: [false,false,false,false,false,false,false,false], row: {}, buttonNames: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,16 +23,22 @@ class App extends Component {
   }
   handleSubmit(event) {
    
-    var url = new URL( 'http://localhost:5000/api/getRow')
+    var url = new URL( 'http://localhost:5000/getRow')
     var params = {data: this.state.value ,}
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
     fetch(url)
     .then(res => res.json())
-    .then(info_ => this.setState({info: info_}, () => console.log("successfully fetched Data", info_)))
+    .then(info_ => this.setState({info: info_}, () => console.log("successfully fetched row information: ", info_)))
 
     event.preventDefault();
   }
-  
+  componentWillMount(){
+    // var url = new URL( 'http://localhost:5000/api/getMultiCols')
+    // fetch(url)
+    // .then(res => res.json())
+    // .then(info_ => this.setState({buttonNames: info_}, () => console.log("successfully fetched coloumm names: ", info_)))
+
+  }
   handleChangeNew(event) {
     console.log(this);
 
@@ -50,18 +57,27 @@ class App extends Component {
   }
   handleSubmitNew(event) {
    console.log(this.state.buttonVal)
-    var url = new URL( 'http://localhost:5000/api/getCol')
-    var params = {data: this.state.buttonVal}
+    var url = new URL('http://localhost:5000/api/getCol')
+    var colValues = []
+    for (var i=0; i<this.state.buttonVal.length; i++){
+      if(this.state.buttonVal[i] == true){
+        colValues.push(this.state.buttonNames[i])
+      }
+    }
+    console.log(colValues)
+    var params = {data: colValues, petId: this.state.value}
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-    fetch(url)
-    .then(res => res.json())
-    .then(info_ => this.setState({row: info_}, () => console.log("successfully fetched Data", info_)))
+    // fetch(url)
+    // .then(res => res.json())
+    // .then(info_ => this.setState({row: info_}, () => console.log("successfully fetched multiple coloumm information", info_)))
     event.preventDefault();
   }
   
 
   render() {
-      var arr = [1,2,3,4,5,6,7,8]   ;
+      var arr = [1,2,3,4,5,6,7,8];
+      var results = {}
+     
     return (
       <div>
        <form onSubmit={this.handleSubmit}>
@@ -81,7 +97,7 @@ class App extends Component {
        
         <div className = 'App-title'>
         
-          <div  className = 'App-intro'>Choose from the buttons {arr} </div>
+          <div  className = 'App-intro'>Choose from the buttons</div>
           <div className = 'Check'><input type="checkbox"   name = {arr[1]} value = {this.state.buttonVal[arr[1]]} onChange={this.handleChangeNew}/>Name</div>
            <div className = 'Check'><input  type="checkbox" onChange={this.handleChangeNew} name = {arr[1]} value = {this.state.buttonVal[arr[1]]}/>Owner</div>
            <div className = 'Check'><input  type="checkbox" onChange={this.handleChangeNew} name = {arr[2]} value = {this.state.buttonVal[arr[2]]}/>Dogs</div>
@@ -89,10 +105,13 @@ class App extends Component {
            <div className = 'Check'><input type="checkbox" onChange={this.handleChangeNew} name = {arr[4]} value = {this.state.buttonVal[arr[4]]}/>Health</div>
            <div className = 'Check'><input  type="checkbox" onChange={this.handleChangeNew} name = {arr[5]} value = {this.state.buttonVal[arr[5]]}/>Body </div>
            <div className = 'Check'><input type="checkbox" onChange={this.handleChangeNew} name = {arr[6]} value = {this.state.buttonVal[arr[6]]}/>Nature</div>
-        
+            
           <input className = 'SubmitB' type="submit" value="Submit" />
         </div >
       </form>
+      <div className = 'App-intro' style = {{fontSize: '20px', paddingLeft: '20px'}}>Visualization of above data</div>
+       <div className = 'App-title' ></div><Chart data={results}/>
+
       </div>
     );
   }
